@@ -120,6 +120,9 @@
 		98B012B91B82D67300053A32 /* Container.Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B012B71B82D67300053A32 /* Container.Arguments.swift */; };
 		98B012BF1B82F68E00053A32 /* ResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B012BE1B82F68E00053A32 /* ResolverType.swift */; };
 		98B012C01B82F68E00053A32 /* ResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B012BE1B82F68E00053A32 /* ResolverType.swift */; };
+		ACF548301D68FA330032D051 /* AutoRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF5482F1D68FA330032D051 /* AutoRegistration.swift */; };
+		ACF5483E1D68FDC00032D051 /* AutoRegistrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF5483A1D68FA630032D051 /* AutoRegistrationSpec.swift */; };
+		ACF5483F1D68FF840032D051 /* BicycleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF5483C1D68FADD0032D051 /* BicycleType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -365,6 +368,9 @@
 		98B012BA1B82D6A400053A32 /* Container.Arguments.erb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Container.Arguments.erb; sourceTree = "<group>"; };
 		98B012BE1B82F68E00053A32 /* ResolverType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolverType.swift; sourceTree = "<group>"; };
 		98B012C11B82F70A00053A32 /* ResolverType.erb */ = {isa = PBXFileReference; lastKnownFileType = text; path = ResolverType.erb; sourceTree = "<group>"; };
+		ACF5482F1D68FA330032D051 /* AutoRegistration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoRegistration.swift; sourceTree = "<group>"; };
+		ACF5483A1D68FA630032D051 /* AutoRegistrationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoRegistrationSpec.swift; sourceTree = "<group>"; };
+		ACF5483C1D68FADD0032D051 /* BicycleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BicycleType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +511,7 @@
 				9855C5C71B689D9000DADB0B /* ServiceEntrySpec.swift */,
 				9855C5C11B68721800DADB0B /* ResolutionPoolSpec.swift */,
 				981ABE921B5FC9DF00294975 /* Info.plist */,
+				ACF5483A1D68FA630032D051 /* AutoRegistrationSpec.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -571,6 +578,7 @@
 				981577F01B675B7F00BF686B /* Circularity.swift */,
 				90B029821C18670000A6A521 /* BasicAssembly.swift */,
 				90B0298A1C186D5300A6A521 /* LoadAwareAssembly.swift */,
+				ACF5483C1D68FADD0032D051 /* BicycleType.swift */,
 			);
 			name = Fakes;
 			sourceTree = "<group>";
@@ -647,6 +655,7 @@
 		98B012BD1B82D6B000053A32 /* GeneratedCode */ = {
 			isa = PBXGroup;
 			children = (
+				ACF5482F1D68FA330032D051 /* AutoRegistration.swift */,
 				98B012B71B82D67300053A32 /* Container.Arguments.swift */,
 				984774F91C02F5A50092A757 /* SynchronizedResolver.Arguments.swift */,
 				98B012BE1B82F68E00053A32 /* ResolverType.swift */,
@@ -1134,6 +1143,7 @@
 				90B029791C185B1600A6A521 /* Assembler.swift in Sources */,
 				9880E70E1C09EE2900ED5293 /* FunctionType.swift in Sources */,
 				985BAFA91B625E0F0055F998 /* ServiceEntry.swift in Sources */,
+				ACF548301D68FA330032D051 /* AutoRegistration.swift in Sources */,
 				984774F01C02F25D0092A757 /* SynchronizedResolver.swift in Sources */,
 				981577F41B676BF700BF686B /* ResolutionPool.swift in Sources */,
 				98B012BF1B82F68E00053A32 /* ResolverType.swift in Sources */,
@@ -1160,7 +1170,9 @@
 				9884E2AA1B60C51C00120259 /* ServiceKeySpec.swift in Sources */,
 				9855C5C21B68721800DADB0B /* ResolutionPoolSpec.swift in Sources */,
 				984774FF1C034C5C0092A757 /* SynchronizedResolverSpec.swift in Sources */,
+				ACF5483F1D68FF840032D051 /* BicycleType.swift in Sources */,
 				9878C6381B65C9E000CBEFEF /* AnimalType.swift in Sources */,
+				ACF5483E1D68FDC00032D051 /* AutoRegistrationSpec.swift in Sources */,
 				90B029831C18670000A6A521 /* BasicAssembly.swift in Sources */,
 				981899E11B5FF88800C702D0 /* ContainerSpec.swift in Sources */,
 				981577F11B675B7F00BF686B /* Circularity.swift in Sources */,
