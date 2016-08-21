@@ -66,7 +66,9 @@ func registerGenerator(dependenciesCount: Int, argumentsCount: Int, breakIntoVar
     
     if breakIntoVariables {
         let services = genericParameters.enumerate().map { "let \($1.lowercaseString): \($1)? = \(resolvers[$0])" }
-        initializer = "       " + services.joinWithSeparator("; ") + "\n" +
+        initializer =
+            "       " + services.joinWithSeparator("; ") + "\n" +
+            "       checkResolved(initializer: initializer, services: \(commaConcat(genericParameters.map{$0.lowercaseString})))\n" +
             "       return initializer(\(commaConcat(genericParameters.map{ "\($0.lowercaseString)!" })))"
     } else {
         initializer = "       initializer(\(commaConcat(resolvers.map{"\($0)\(isArgumentInjection ? "" : "!")"})))"
@@ -111,13 +113,42 @@ func resolverGenerator(arguments: Int) -> String {
     return resolver.joinWithSeparator("\n")
 }
 
+func printIf(list: [String]) -> String {
+    if let letter = list.first {
+        var listMutable = list
+        listMutable.removeFirst()
+        return "(\(letter.lowercaseString) == nil ? \"\\(\(letter.uppercaseString).self)\" : \(printIf(listMutable)))"
+    } else {
+        return "\"??\""
+    }
+}
+
+func checkGenerator(dependencies: Int) -> String {
+    
+    let genericParameters = (0..<dependencies).map(genericType) // ["A", "B", "C"]
+    let generics = commaConcat(genericParameters)
+    
+    let servicesDefinition = dependencies == 0 ? "" : "services \(commaConcat(genericParameters.enumerate().map{ "\($0 >= 1 ? "_" : "") \($1.lowercaseString): \($1)?" }))"
+    
+    let check = [
+    "private func checkResolved<Service, \(generics)>(initializer initializer: (\(generics)) -> Service, \(servicesDefinition)){",
+    "   let services: [Any?] = [\(commaConcat(genericParameters.map{ $0.lowercaseString }))].filter{ $0 == nil }",
+    "   if let _ = services.first {",
+    "       assertionFailure(\"Failed to resolve \\(\(printIf(genericParameters))), initializer: (\(commaConcat(genericParameters.map{ "\\(\($0).self)" }))) -> \\(Service.self)\")",
+    "   }",
+    "}"
+    ]
+    
+    return check.joinWithSeparator("\n")
+}
+
 
 print("Generating 💬")
 
 
 let dependenciesCount = Int(Process.arguments[safe: 1] ?? "9")!
 let argumentsCount = Int(Process.arguments[safe: 2] ?? "3")!
-let breakCount = Int(Process.arguments[safe: 3] ?? "5")!
+let breakCount = Int(Process.arguments[safe: 3] ?? "0")!
 
 let resolvers = (0...argumentsCount).map { arg in
     resolverGenerator(arg)
@@ -129,6 +160,10 @@ let registers = (0...dependenciesCount).map { dep in
     }
     }.reduce([]){ $0 + $1}
 
+let checks = (1...dependenciesCount).map { dep in
+    checkGenerator(dep)
+}
+
 var output = [
     headers(outputPath),
     "\n\n import Swinject \n\n",
@@ -137,7 +172,8 @@ var output = [
     "}\n\n",
     "extension Container {\n\n",
         registers.joinWithSeparator("\n\n"),
-    "\n\n}"
+    "\n\n}",
+    checks.joinWithSeparator("\n\n")
 ].joinWithSeparator("\n")
 
 let currentPath = NSURL(fileURLWithPath: NSFileManager.defaultManager().currentDirectoryPath)
