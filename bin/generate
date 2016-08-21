@@ -19,6 +19,23 @@ func headers(fileName: String) -> String {
     "//"].joinWithSeparator("\n")
 }
 
+func registerComment(dependencies: Int, arguments: Int) -> String {
+    let genericArguments = (1..<(arguments+1)).map{ "\(genericArgumentPrefix)\($0)" } // ["Arg1", "Arg2", "Arg3"]
+    return [
+        "/** Registers a factory that resolves the Service based on dependencies infered from the Service initializer.",
+        " ",
+        " Usage: `register(initializer: MyService.init, service: MyService.self\((arguments > 0) ? ", \(arguments == 1 ? "argument" : "arguments"): \(commaConcat(genericArguments.map{"\($0).self"}))" : ""))`",
+        " - Parameters:",
+        "    - initializer: Initializer of the registered service",
+        "    - service: Registered service type",
+        "    - name: Optional name of the service",
+        (arguments > 0) ? "    - \(arguments == 1 ? "argument" : "arguments"): Argument type(s) that will be resolved dynamically instead of resolving dependency" : "",
+        " - Returns: The registered service entry \(arguments > 0 ? "with \(arguments) arguments" : "")",
+        " - Important: Might fail if one of the dependencies is unresolvable.",
+        " */"
+        ].joinWithSeparator("\n")
+}
+
 extension Array {
     subscript(safe index: Int) -> Element? {
         return indices ~= index ? self[index] : nil
@@ -77,6 +94,7 @@ func registerGenerator(dependenciesCount: Int, argumentsCount: Int, breakIntoVar
     let closureParameters = commaConcat(["r"] + genericArgumentsVars)
     
     let register = [
+        registerComment(dependenciesCount, arguments: argumentsCount),
         "func register<\(genericsDefinition)>(initializer initializer: (\(concatenatedParameters)) -> Service, service: Service.Type, name: String? = nil\(argumentsDefinition)) -> ServiceEntry<Service> {",
         "   return self.register(service.self, name: name, factory: { \(closureParameters) in ",
         initializer,
@@ -167,12 +185,12 @@ let checks = (1...dependenciesCount).map { dep in
 var output = [
     headers(outputPath),
     "\n\n import Swinject \n\n",
-    "extension ResolverType {\n\n",
-    resolvers.joinWithSeparator("\n\n"),
-    "}\n\n",
     "extension Container {\n\n",
         registers.joinWithSeparator("\n\n"),
     "\n\n}",
+    "extension ResolverType {\n\n",
+    resolvers.joinWithSeparator("\n\n"),
+    "}\n\n",
     checks.joinWithSeparator("\n\n")
 ].joinWithSeparator("\n")
 
